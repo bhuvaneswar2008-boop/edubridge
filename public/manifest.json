@@ -1,0 +1,18 @@
+{
+  "name": "EduBridge",
+  "short_name": "EduBridge",
+  "description": "Learn. Practice. Grow. CBSE Class 5-10 Interactive E-Learning",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#020617",
+  "theme_color": "#020617",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/assets/edubridge-background.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

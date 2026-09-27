@@ -13,6 +13,12 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: 'EduBridge | Learn. Practice. Grow.',
   description: 'A modern e-learning platform for Physics, Chemistry, Mathematics and Biology aligned with CBSE Class 5–10 fundamentals.',
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'EduBridge',
+  },
 }
 
 export default function RootLayout({
