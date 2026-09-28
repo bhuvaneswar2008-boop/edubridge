@@ -33,9 +33,11 @@ export async function verifySessionToken(token: string): Promise<SessionPayload 
 export async function setSessionCookie(payload: SessionPayload) {
   const token = await createSessionToken(payload)
   const cookieStore = cookies()
+  // Use secure HTTPS cookies in production/Vercel; allow plain HTTP on local network testing
+  const isSecure = process.env.VERCEL === '1' || process.env.NODE_ENV === 'production' && process.env.LOCAL_DEV !== 'true'
   cookieStore.set(COOKIE_NAME, token, {
     httpOnly: true,
-    secure: false, // Allows local Wi-Fi / IP testing on phones without HTTPS
+    secure: isSecure,
     sameSite: 'lax',
     path: '/',
     maxAge: 60 * 60 * 24 * 7, // 7 days

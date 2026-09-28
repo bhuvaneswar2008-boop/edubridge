@@ -312,98 +312,109 @@ It is used as the primary visual background behind the liquid-glass interface.
 
 ---
 
-## 📱 Future Mobile App
+## 📱 Android Mobile Application
 
-The mobile application will connect to the same EduBridge backend.
+EduBridge includes a high-performance native Android application (`com.edubridge.app`):
+- **Universal Architecture**: Supports Android 7.0+ (API 24) to Android 14+ (API 34).
+- **Security**: Full production HTTPS enforcement, strict SSL validation (no insecure bypasses), and encrypted session cookie management.
+- **Offline & Crash Resilience**: Liquid-morphic error screens with instant connection retry, swipe-to-refresh, hardware acceleration, and process crash recovery.
 
-The following will be shared:
+### 📥 Downloading the APK
+Download the latest verified release APK directly from GitHub Releases:
+- **Repository Releases**: [EduBridge Releases](https://github.com/bhuvaneswar2008-boop/edubridge/releases)
+- **Latest Release**: `v1.0.1` (`EduBridge-v1.0.1.apk`)
 
-* Authentication
-* Student profiles
-* Subjects
-* Chapters
-* Lessons
-* Videos
-* Practice
-* Tests
-* Scores
-* Progress
-* Notifications
-* AI Tutor
+### 🔨 Building the Android APK Locally
+To build the release APK on your machine:
+```bash
+cd android
+# On Windows:
+gradlew.bat clean
+gradlew.bat assembleRelease
 
-The goal is to allow a student to switch between the website and mobile app without losing their learning progress.
+# On macOS/Linux:
+./gradlew clean
+./gradlew assembleRelease
+```
+The output APK is generated at:
+`android/app/build/outputs/apk/release/app-release.apk`
 
 ---
 
-## 🗺️ Roadmap
+## 🔍 System Health Check API
+
+Verify that the EduBridge server and API are operational:
+```http
+GET /api/v1/health
+```
+Response:
+```json
+{
+  "status": "ok",
+  "service": "EduBridge API"
+}
+```
+
+---
+
+## 🛠️ Diagnosis and Fixes Summary
+
+1. **Vercel Root 404 & Build Pipeline**:
+   - Fixed `package.json` entry points and added `"postinstall": "prisma generate"` so Prisma clients compile automatically on cloud deployment environments.
+   - Configured `export const dynamic = 'force-dynamic'` and `export const revalidate = 0` on root `app/page.tsx` to ensure server redirects function without prerender caching errors.
+2. **Authentication & Session Security**:
+   - Upgraded cookie session configuration in `lib/auth.ts` to automatically enforce `Secure; HttpOnly; SameSite=Lax` in production environments while maintaining local testing support.
+   - Sanitized redirects in `middleware.ts` using standard HTTP 302 to prevent aggressive proxy caching.
+3. **Android Client Hardening**:
+   - Replaced development localhost and LAN IP dependencies with production URL configuration via `BuildConfig.EDUBRIDGE_PRODUCTION_URL`.
+   - Enabled `CookieManager` third-party acceptance and explicit flushing to ensure student authentication sessions persist across app restarts.
+   - Implemented strict SSL error handling, rejecting invalid certificates to protect student credentials.
+   - Added automated GitHub Actions CI/CD workflow (`.github/workflows/android.yml`) building signed release artifacts on tags and pushes.
+
+---
+
+## 🗺️ Roadmap Status
 
 ### Phase 1 — Web Platform
-
 * [x] Project architecture
 * [x] UI concept
 * [x] Liquid-glass design
-* [ ] Dashboard
-* [ ] Subjects
-* [ ] Lessons
-* [ ] Practice
-* [ ] Tests
-* [ ] Authentication
-* [ ] Database
-* [ ] AI Tutor
+* [x] Dashboard
+* [x] Subjects (Physics, Chemistry, Mathematics, Biology)
+* [x] Lessons
+* [x] Practice
+* [x] Tests
+* [x] Authentication
+* [x] Database & Prisma
+* [x] AI Tutor
 
-### Phase 2 — Content
-
-* [ ] Physics content
-* [ ] Chemistry content
-* [ ] Mathematics content
-* [ ] Biology content
-* [ ] Educational video resources
-* [ ] Practice question bank
-* [ ] Test question bank
-
-### Phase 3 — Mobile
-
-* [ ] Mobile UI
-* [ ] API integration
-* [ ] Authentication
-* [ ] Offline-friendly learning
-* [ ] Push notifications
-* [ ] Shared progress
-
-### Phase 4 — Expansion
-
-* [ ] Personalized learning
-* [ ] Advanced AI tutoring
-* [ ] More subjects
-* [ ] More classes
-* [ ] Teacher/admin dashboard
-* [ ] Content management system
-* [ ] Learning analytics
+### Phase 2 — Mobile Platform
+* [x] Native Android WebView shell
+* [x] Production HTTPS connectivity
+* [x] Session cookie persistence
+* [x] Offline & network error recovery
+* [x] GitHub Actions automated release build (`v1.0.1`)
 
 ---
 
 ## 🤝 Contributing
 
 Contributions, ideas and improvements are welcome.
-
-If you would like to contribute:
-
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Test your changes
+4. Test with `npm test` and build with `npm run build`
 5. Open a pull request
 
 ---
 
 ## 📄 License
 
-Add the project's chosen license here.
+ISC
 
 ---
 
 ## 🎓 EduBridge
 
 **Learn. Practice. Grow.**
-
 Built to make learning more accessible, understandable and engaging.
